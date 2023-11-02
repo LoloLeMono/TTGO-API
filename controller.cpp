@@ -5,6 +5,7 @@
 #include "view.h"
 #include <WebServer.h>
 #include <ArduinoJson.h>
+#include <HTTPClient.h> // pour ESP32
 
 Controller::Controller(WebServer& s, int ledPin) : server(s), LED_PIN(ledPin) {}
 
@@ -72,4 +73,20 @@ void Controller::sendJson() {
   serializeJson(doc, jsonStr);
 
   server.send(200, "application/json", jsonStr);
+}
+
+String Controller::apiTamCall()
+{
+  // Effectuer la requête HTTP
+  HTTPClient http;
+  String url = "https://montpellier-tam-api.vercel.app/api/query?route_short_name=15&stop_name=TONNELLES&trip_headsign=ODYSSEUM";
+
+  http.begin(url); // Commencer la requête HTTP
+  int httpResponseCode = http.GET(); // Effectuer la requête GET
+
+  String payload = http.getString(); // Obtenir la réponse de l'API
+
+  http.end(); // Terminer la requête HTTP
+
+  return payload;
 }

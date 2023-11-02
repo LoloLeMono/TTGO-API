@@ -17,4 +17,6 @@ public:
   void handleLedStatue();
   void sendSensorsList();
   void sendJson();
+
+  String apiTamCall();
 };

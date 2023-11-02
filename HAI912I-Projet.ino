@@ -1,6 +1,7 @@
 #include <WiFi.h>
 #include <WebServer.h>
 #include <ArduinoJson.h>
+#include <TFT_eSPI.h>
 
 #include "model.h"
 #include "view.h"
@@ -10,8 +11,10 @@
 Model model;
 View view;
 
+TFT_eSPI tftf = TFT_eSPI(135, 240); // Invoke custom library
+
 #define WIFI_SSID "Bbox-46D5F041"
-#define WIFI_PASSWORD ""
+#define WIFI_PASSWORD "sdS7RDTR33awhGKHAT"
 
 WebServer server(80);
 
@@ -47,4 +50,5 @@ void setup() {
 
 void loop() {
   server.handleClient();
+  view.printShedules(controller.apiTamCall());
 }
