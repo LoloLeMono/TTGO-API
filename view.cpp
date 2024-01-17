@@ -1,4 +1,3 @@
-// view.cpp
 #include "view.h"
 #include "model.h"
 #include <vector>
@@ -40,11 +39,11 @@ void View::printShedules(String payload)
 
   tft.setRotation(1);
 
-  tft.setCursor(10, 10); // Position pour "Tonnelle"
+  tft.setCursor(10, 10);
   tft.print("Tonnelles");
-  tft.setCursor(90, 10); // Position pour "Tonnelle"
+  tft.setCursor(90, 10);
   tft.print("->");
-  tft.setCursor(130, 10); // Position pour "Tonnelle"
+  tft.setCursor(130, 10);
   tft.print("Odysseum");
 
   for (int i=0; i<schedules.size(); i++)
@@ -60,7 +59,7 @@ String View::secondsToMinuts(String s)
 {
   int buff = s.toInt();
   buff = buff/60;
-  Serial.println(String(buff));
+  //Serial.println(String(buff));
 
   return String(buff);
 }

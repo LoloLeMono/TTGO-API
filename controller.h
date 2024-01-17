@@ -1,4 +1,3 @@
-// controller.h
 #pragma once
 #include "model.h"
 #include "view.h"
@@ -10,20 +9,21 @@ public:
   View view;
   WebServer& server;
   int LED_PIN;
-  int LUM_PIN;
   bool showSchedules;
 
-  // Déclarations de fonctions liées au contrôleur
+  // Constructeur
   Controller(WebServer&, int);
-  bool getShowSchedules();
-  void setShowSchedules(bool state);
+
+  // Fonctions pour la gestion de l'état et des données
   void sendLedStatue();
   void sendLumValue();
   void sendTempValue();
   void handleLedStatue();
   void sendSensorsList();
   void sendJson();
-
   String apiTamCall();
-  long calculLum();
+
+  // Fonctions pour la gestion des états
+  bool getShowSchedules();
+  void setShowSchedules(bool state);
 };

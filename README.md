@@ -23,10 +23,28 @@ Shéma du cablage
 Usage
 ---------------
 
-* Rentrez le SSID et le code de votre réseau wifi dans le fichier présent dans le projet.
 * Une fois le cablage fais, vous pouvez brancher l'ESP avec le programme téléversé à l'interieur.
+* Connectez vous au réseau "TTGO-Config" avec le mdp "12345678".
+* Alternative test : Rentrez le SSID et le code de votre réseau wifi (en dur) dans le fichier "HAI912I-Projet" présent dans le projet.
+* Grace à l'application (ou une simple requête http), vous pouvez envoyer le ssid et le mdp de votre réseau WiFi au TTGO.
+* Vous pouvez désormais utiliser l'api pour interagir avec les capteurs.
 
-### Routes 
+## Routes Disponibles du Serveur
+
+- **GET /led**
+  - Renvoie l'état actuel de la LED.
+
+- **GET /sensors**
+  - Liste les capteurs disponibles.
+
+- **POST /led**
+  - Permet de changer l'état de la LED.
+
+- **GET /sensor/lum**
+  - Renvoie la valeur actuelle de luminosité du capteur.
+
+- **GET /sensor/temp**
+  - Renvoie la valeur actuelle de température du capteur.
 
 
 Authors:
