@@ -6,14 +6,14 @@
 
 Sensor::Sensor(){}
 
-Sensor::Sensor(String n, String v, int p) : name(n), value(v), pin(p) {}
+Sensor::Sensor(String n, long v, int p) : name(n), value(v), pin(p) {}
 
 String Sensor::getName()
 {
   return this->name;
 }
 
-String Sensor::getValue()
+long Sensor::getValue()
 {
   return this->value;
 }

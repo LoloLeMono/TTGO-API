@@ -4,10 +4,12 @@
 #include <Arduino.h>
 #include <list>
 #include <TFT_eSPI.h>
+#include <Button2.h>
 
 class Model {
   private:
     bool ledState;
+    Sensor lumiere;
     std::list<Sensor> sensors;
 
     // Pin "DAC" = sorties analogiques / générer des signaux analogiques.
@@ -17,11 +19,14 @@ class Model {
 
     // Pin "ADC" = sorties analogiques / lectures analogiques en utilisant analogRead.
     // Les valeurs analogiques sont généralement comprises entre 0 et 4095.
-    std::list<int> ADC_ports = {2, 15, 13, 12, 36, 39, 32, 33, 25, 26, 27};
+    std::list<int> ADC_ports = {36, 37, 38, 39, 32, 33, 25, 26};
+
     int temperaturePin;
     int lumierePin;
     
   public:
+    Button2 btn;
+
     // Constructeur par défaut
     Model();
 
@@ -33,8 +38,11 @@ class Model {
     void setLedState(bool state);
     bool getLedState();
     std::list<Sensor> getSensors();
-    void scanSensors();
-    bool detecterCapteurTemperature(int valeur);
-    bool detecterCapteurLumiere(int valeur);
+    std::list<int> scanSensors();
+    float getTemp(int pin);
+
+    Sensor getLumiere();
     void printText(String txt);
+
+    bool isSensorConnected(int pin);
 };

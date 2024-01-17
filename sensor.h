@@ -7,7 +7,7 @@ class Sensor
 {
   private:
     String name;
-    String value;
+    long value;
     int pin;
     
   public:
@@ -15,10 +15,10 @@ class Sensor
     Sensor();
 
     // Constructeur avec initialisation personnalisée
-    Sensor(String name, String value, int pin);
+    Sensor(String name, long value, int pin);
 
     String getName();
-    String getValue();
+    long getValue();
     int getPin();
 
     void scanPin();

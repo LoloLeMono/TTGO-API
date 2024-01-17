@@ -38,29 +38,29 @@ void View::printShedules(String payload)
     schedules.push_back(item["delay_sec"]);
   }
 
-  tft.setCursor(20, 20); // Position pour "Tonnelle"
+  tft.setRotation(1);
+
+  tft.setCursor(10, 10); // Position pour "Tonnelle"
   tft.print("Tonnelles");
-  tft.setCursor(20, 40); // Position pour "Tonnelle"
+  tft.setCursor(90, 10); // Position pour "Tonnelle"
   tft.print("->");
-  tft.setCursor(20, 60); // Position pour "Tonnelle"
+  tft.setCursor(130, 10); // Position pour "Tonnelle"
   tft.print("Odysseum");
 
   for (int i=0; i<schedules.size(); i++)
   {
-    tft.setCursor(20, 100*(i+1)); // Position pour 1er delai
-    tft.print(String(schedules[i]));
+    schedules[i] = secondsToMinuts(schedules[i]);
+    tft.drawString(schedules[i], 8+(i*80), 50, 7);
   }
 
-  /*
-  tft.setCursor(20, 100); // Position pour 1er delai
-  tft.print(String(schedules[0]));
-  // tft.drawString(String(schedules[0]/60),  tft.width() / 2, tft.height() / 2 );
-
-  tft.setCursor(20, 150); // Position pour 2eme delai
-  tft.print(String(schedules[1]));
-  Serial.println(String(schedules[1]));
-  // tft.drawString(String(schedules[1]/60),  tft.width() / 2, tft.height() / 2 );
-  */
-
   delay(10000);
+}
+
+String View::secondsToMinuts(String s)
+{
+  int buff = s.toInt();
+  buff = buff/60;
+  Serial.println(String(buff));
+
+  return String(buff);
 }

@@ -9,6 +9,8 @@ Model::Model(){}
 void Model::initialize() {
   // Initialisation du modèle
   ledState = false;
+  //btn = btn(35);
+  sensors.push_back(Sensor("lumiere", 0.0, 36.0));
 }
 
 void Model::setLedState(bool state) {
@@ -25,57 +27,46 @@ std::list<Sensor> Model::getSensors() {
   return this->sensors;
 }
 
-// Scanner les ports de l'esp et les stocker dans la liste "sensors"
-void Model::scanSensors()
-{
+float Model::getTemp(int pin) {
+  int analogValue = analogRead(pin);
+  float R1 = 10000.0; // résistance fixe
+  float T0 = 25.0 + 273.15;
+  float R0 = 10000.0; // Résistance du thermistor à T0
+  float B = 3950.0; // Coefficient B
 
-  // Scanner le pin DAC_ports[i] stocker le résultat dans sensors[] (write possible)
-  for (int i=0; i<this->DAC_ports.size(); i++)
-  {
-    /*
-    int lecture = analogRead(DAC_ports[i]);
+  float Vout = analogValue * 3.3 / 4095.0;
+    
+  float RT = ((R1 * 3.3) / Vout) - R1;
+  
+  // Utilisation de la formule de Steinhart-Hart
+  float lnRT = log(RT / R0);
 
-    if (detecterCapteurTemperature(lecture)) {
-      Serial.print("Capteur de température LM35 détecté sur le pin ");
-      Serial.print(DAC_ports[i]);
-      Serial.println(); // Pour ajouter un saut de ligne
-    } else if (detecterCapteurLumiere(lecture)) {
-      Serial.println("Capteur de lumiere détecté sur le pin ");
-      Serial.print(DAC_ports[i]);
-      Serial.println(); // Pour ajouter un saut de ligne
-    } else {
-      Serial.println("Aucun capteur détecté sur le pin ");
-      Serial.print(DAC_ports[i]);
-      Serial.println(); // Pour ajouter un saut de ligne
-    }
+  float tempK = 1.0 / ((1.0 / T0) + (1.0 / B) * lnRT);
+  
+  float tempC = tempK - 273.15;
 
-    delay(1000);
-    */
-  }
-
-  // Scanner le pin ADC_ports[i] stocker le résultat dans sensors[]
-  for (int i=0; i<this->ADC_ports.size(); i++)
-  {
-    /*
-    int etatCapteur = digitalRead(ADC_ports[i]);
-
-    if (etatCapteur == HIGH) {
-      Serial.println("Le capteur est actif (HIGH).");
-    } else {
-      Serial.println("Le capteur est inactif (LOW).");
-    }
-
-    delay(1000);
-    */
-  }
+  return tempC;
 }
 
-bool Model::detecterCapteurTemperature(int valeur){
-  // Plage de valeurs typiques pour un capteur LM35
-  return (valeur >= 200 && valeur <= 800);
+Sensor Model::getLumiere(){
+  return this->lumiere;
 }
 
-bool Model::detecterCapteurLumiere(int valeur){
-  // Plage de valeurs typiques pour un capteur LM35
-  return (valeur >= 200 && valeur <= 800);
+bool Model::isSensorConnected(int pin) {
+  int value = analogRead(pin); // ou digitalRead pour les signaux numériques
+  // Remplacer 0 et 1023 par les valeurs attendues pour un capteur connecté
+  return (value > 0); 
+}
+
+std::list<int> Model::scanSensors() {
+    std::list<int> detectedSensors;
+    for (int pin : ADC_ports) {
+        if (isSensorConnected(pin)) {
+            Serial.println("Capteur détecté sur la broche " + String(pin));
+            detectedSensors.push_back(pin); // Ajouter le pin à la liste
+        } else {
+            Serial.println("Aucun capteur sur la broche " + String(pin));
+        }
+    }
+    return detectedSensors;
 }

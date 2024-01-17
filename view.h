@@ -17,4 +17,5 @@ public:
   void displayLedState(bool state);
 
   void printShedules(String data);
+  String secondsToMinuts(String s);
 };
